@@ -42,13 +42,24 @@ public class MessageService {
         return messageRepository.findByMessageId(id);
     }
 
-    // @Transactional
     public int deleteMessage(Integer id) {
         if(messageRepository.findByMessageId(id) != null) {
             messageRepository.deleteById(id);
             return 1;
         }
         return 0;
+    }
+
+    public int updateMessage(Integer id, String newText) {
+        if(messageRepository.findByMessageId(id) != null && newText.length()-20 > 0 && newText.length()-20 < 255) {
+            messageRepository.findByMessageId(id).getMessage_text().equals(newText);
+            return 1;
+        }
+        return 0;
+    }
+
+    public List<Message> getMessagesFromUser(Integer id) {
+        return messageRepository.findAllByAccountId(id);
     }
 
 }

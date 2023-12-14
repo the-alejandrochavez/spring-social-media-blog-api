@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -83,7 +84,7 @@ public class SocialMediaController {
     }
 
     @DeleteMapping("/messages/{message_id}")
-    public @ResponseBody ResponseEntity<Integer> deleteMessageById(@PathVariable Integer message_id) {
+    public ResponseEntity<Integer> deleteMessageById(@PathVariable Integer message_id) {
         int val = messageService.deleteMessage(message_id);
 
         if(val == 0) {
@@ -91,6 +92,23 @@ public class SocialMediaController {
         }
 
         return ResponseEntity.status(200).body(val);
+    }
+
+    @PatchMapping("/messages/{message_id}")
+    public ResponseEntity<Integer> updateMessageById(@PathVariable Integer message_id, @RequestBody String newText) {
+        int val = messageService.updateMessage(message_id, newText);
+        System.out.println(val + " HEREEEE");
+
+        if(val == 0) {
+            return ResponseEntity.status(400).build();
+        } else {
+            return ResponseEntity.status(200).body(val);
+        }
+    }
+
+    @GetMapping("/accounts/{account_id}/messages")
+    public @ResponseBody List<Message> allMessagesFromUser(@PathVariable Integer account_id) {
+        return messageService.getMessagesFromUser(account_id);
     }
 
 }

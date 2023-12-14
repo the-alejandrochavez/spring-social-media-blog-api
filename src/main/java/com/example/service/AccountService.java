@@ -23,10 +23,6 @@ public class AccountService {
         return accountRepository.findByUsernameAndPassword(acc.getUsername(), acc.getPassword());
     }
 
-    // public Account userExistsByAccountId(Account acc) {
-    //     return accountRepository.findByAccountId(acc.getAccount_id());
-    // }
-
     public boolean userExistsByUsername(String username) {
         return accountRepository.existsByUsername(username);
     }
