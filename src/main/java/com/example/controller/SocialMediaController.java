@@ -11,7 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -64,6 +70,27 @@ public class SocialMediaController {
         } else {
             return ResponseEntity.status(400).build();
         }
+    }
+
+    @GetMapping("/messages")
+    public @ResponseBody List<Message> getAllMessages() {
+        return messageService.getAllMessages();
+    }
+
+    @GetMapping("/messages/{message_id}")
+    public @ResponseBody Message getMessageById(@PathVariable Integer message_id) {
+        return messageService.getMessage(message_id);
+    }
+
+    @DeleteMapping("/messages/{message_id}")
+    public @ResponseBody ResponseEntity<Integer> deleteMessageById(@PathVariable Integer message_id) {
+        int val = messageService.deleteMessage(message_id);
+
+        if(val == 0) {
+            return ResponseEntity.status(200).build();
+        }
+
+        return ResponseEntity.status(200).body(val);
     }
 
 }
